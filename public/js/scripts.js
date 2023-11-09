@@ -1,4 +1,5 @@
-fetch('http://localhost:7100/api/v1/applications')
+// fetch('http://localhost:7100/api/v1/applications')  // local debug only
+fetch('http://helpmybabies:7100/api/v1/applications')
 .then(response => response.json())
 .then(result => filterRows(result))
 .then(filteredResult => generateRows(filteredResult))
