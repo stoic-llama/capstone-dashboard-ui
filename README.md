@@ -1,4 +1,4 @@
-This was forked from Bob's Programming Academy for a simpler version of Bob's dashboard for the capstone project.
+This was forked from Bob's Programming Academy for a simpler version of Bob's dashboard for the ccsu capstone project.
 
 
 ### Copyright and License
