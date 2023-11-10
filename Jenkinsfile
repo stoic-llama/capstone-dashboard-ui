@@ -60,7 +60,7 @@ pipeline {
                 ]) {
                     sh '''
                         ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "docker run -d \
-                        -p 7101:7101 \
+                        -p 7200:7200 \
                         --rm \
                         --name capstone-dashboard-ui \
                         --network monitoring \
