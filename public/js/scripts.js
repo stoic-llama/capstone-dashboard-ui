@@ -87,7 +87,7 @@ function generateRows(result) {
                 </div>
                 <h1>
                 ${item.freqToProd}
-                <small style="font-size: small;">per day</small>
+                <small style="font-size: small;">per month</small>
                 </h1>
             </div>
 
