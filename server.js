@@ -6,7 +6,7 @@ const app = express()
 
 const port = process.env.PORT || 9999
 
-// app.use(express.static('public'))
+app.use(express.static('public'))
 
 app.get('/healthcheck', (req, res) => {
   res.send(`API is alive on ${port}!`);
