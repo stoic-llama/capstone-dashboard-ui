@@ -51,7 +51,7 @@ pipeline {
                 ]) {
                     script {
                         // Use SSH to check if the container exists
-                        def containerExists = sh(script: "ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} docker ps -q --filter name=\capstone-dashboard-ui", returnStatus: true) == 0
+                        def containerExists = sh(script: "ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} docker ps -q --filter name=capstone-dashboard-ui", returnStatus: true) == 0
 
                         if (containerExists) {
                             echo "Container exists, stopping it..."
