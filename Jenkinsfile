@@ -45,17 +45,15 @@ pipeline {
         stage("deploy") {
             steps {
                 echo 'deploying the application...' 
-
-                def containerName = 'capstone-dashboard-ui'
                 
                 withCredentials([
                     string(credentialsId: 'website', variable: 'WEBSITE'),
                 ]) {
                     sh '''
                         ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "/bin/sh -c \
-                        docker ps -q --filter name=${containerName} > result \
-                        
-                        echo "result is: ${#result} 
+                        containerName=capstone-dashboard-ui
+
+                        docker ps -q --filter name=${containerName} > result | echo "result is: ${#result} 
 
                         'if [ ${#result} > 0 ]; \
                         then echo "Container exists. Stopping container..." docker stop ${containerName}; \
