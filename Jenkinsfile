@@ -46,6 +46,8 @@ pipeline {
             steps {
                 echo 'deploying the application...' 
 
+                def containerName = 'capstone-dashboard-ui'
+                
                 withCredentials([
                     string(credentialsId: 'website', variable: 'WEBSITE'),
                 ]) {
