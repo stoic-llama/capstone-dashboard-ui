@@ -46,44 +46,47 @@ pipeline {
             steps {
                 echo 'deploying the application...' 
 
-                // Use the withCredentials block to access the credentials
-                // Note: need --rm when docker run.. so that docker stop can kill it cleanly
-               withCredentials([
-                    string(credentialsId: 'website', variable: 'WEBSITE'),
-                ]) {
-                    // Define your container name or ID
-                    def containerName = 'capstone-dashboard-ui'
+                script {
+                    // Use the withCredentials block to access the credentials
+                    // Note: need --rm when docker run.. so that docker stop can kill it cleanly
+                    withCredentials([
+                        string(credentialsId: 'website', variable: 'WEBSITE'),
+                    ]) {
+                        // Define your container name or ID
+                        def containerName = 'capstone-dashboard-ui'
 
-                    // Check if the container exists before attempting to stop it
-                    def containerExists = sh(script: "docker ps -q --filter name=${containerName}", returnStatus: true) == 0
+                        // Check if the container exists before attempting to stop it
+                        def containerExists = sh(script: "docker ps -q --filter name=${containerName}", returnStatus: true) == 0
 
-                    if (containerExists) {
-                        // Stop the Docker container
-                        sh "docker stop ${containerName}"
-                        echo "Container stopped successfully."
+                        if (containerExists) {
+                            // Stop the Docker container
+                            sh "docker stop ${containerName}"
+                            echo "Container stopped successfully."
 
-                        sh "docker run -d \
-                        -p 7200:7200 \
-                        --rm \
-                        --name capstone-dashboard-ui \
-                        --network monitoring \
-                        -v /var/run/docker.sock:/var/run/docker.sock \
-                        stoicllama/capstone-dashboard-ui:${version}"
+                            sh "docker run -d \
+                            -p 7200:7200 \
+                            --rm \
+                            --name capstone-dashboard-ui \
+                            --network monitoring \
+                            -v /var/run/docker.sock:/var/run/docker.sock \
+                            stoicllama/capstone-dashboard-ui:${version}"
 
-                        sh "docker ps"
-                    } else {
-                        echo "Container does not exist."
+                            sh "docker ps"
+                        } else {
+                            echo "Container does not exist."
 
-                        sh "docker run -d \
-                        -p 7200:7200 \
-                        --rm \
-                        --name capstone-dashboard-ui \
-                        --network monitoring \
-                        -v /var/run/docker.sock:/var/run/docker.sock \
-                        stoicllama/capstone-dashboard-ui:${version}"
+                            sh "docker run -d \
+                            -p 7200:7200 \
+                            --rm \
+                            --name capstone-dashboard-ui \
+                            --network monitoring \
+                            -v /var/run/docker.sock:/var/run/docker.sock \
+                            stoicllama/capstone-dashboard-ui:${version}"
 
-                        sh "docker ps"
+                            sh "docker ps"
+                        }
                     }
+
                 }
             }
         }
