@@ -49,18 +49,20 @@ pipeline {
                 withCredentials([
                     string(credentialsId: 'website', variable: 'WEBSITE'),
                 ]) {
-                    sh '''
-                        ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "/bin/sh -c \
-                        containerName=capstone-dashboard-ui
+                    script {
+                        // Use SSH to check if the container exists
+                        def containerExists = sh(script: "ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} docker ps -q --filter name=\capstone-dashboard-ui", returnStatus: true) == 0
 
-                        docker ps -q --filter name=${containerName} > result | echo "result is: ${#result} 
+                        if (containerExists) {
+                            echo "Container exists, stopping it..."
 
-                        'if [ ${#result} > 0 ]; \
-                        then echo "Container exists. Stopping container..." docker stop ${containerName}; \
-                        else echo "Container does not exist. Continuing...";  
-                        fi' 
-                        "
-                    '''
+                            // Use SSH to stop the Docker container
+                            sh "ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} docker stop capstone-dashboard-ui"
+                            echo "Container stopped successfully"
+                        } else {
+                            echo "Container does not exist, continuing..."
+                        }
+                    }
                 }
 
                 withCredentials([
