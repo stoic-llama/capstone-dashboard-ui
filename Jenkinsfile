@@ -69,7 +69,7 @@ pipeline {
                         --name capstone-dashboard-ui \
                         --network monitoring \
                         -v /var/run/docker.sock:/var/run/docker.sock \
-                        stoicllama/capstone-dashboard-ui:${version}
+                        stoicllama/capstone-dashboard-ui:${version} \
 
                         docker ps"
                     } else {
@@ -81,7 +81,7 @@ pipeline {
                         --name capstone-dashboard-ui \
                         --network monitoring \
                         -v /var/run/docker.sock:/var/run/docker.sock \
-                        stoicllama/capstone-dashboard-ui:${version}
+                        stoicllama/capstone-dashboard-ui:${version} \
 
                         docker ps"
                     }
