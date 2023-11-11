@@ -47,15 +47,14 @@ pipeline {
                 echo 'deploying the application...' 
 
                 script {
-                    // Define your container name or ID
                     def containerName = 'capstone-dashboard-ui'
 
-                    // Check if the container exists before attempting to stop it
-                    def containerExists = sh(script: "docker ps -q --filter name=${containerName}", returnStatus: true) == 0
+                    def containerExists = sh(returnStdout: true, script: "docker ps -q --filter name=${containerName}")
 
+                    echo "containerExists: "
                     echo "${containerExists}"
                     
-                    if (containerExists) {
+                    if (containerExists.length() != 0) {
                         // Stop the Docker container
                         sh "docker stop ${containerName}"
                         echo "Container stopped successfully. Continuing..."
@@ -63,14 +62,6 @@ pipeline {
                         echo "Container does not exist. Continuing..."
                     }
                 }
-
-                // Use the withCredentials block to access the credentials
-                // Note: need --rm when docker run.. so that docker stop can kill it cleanly
-                //    withCredentials([
-                //         string(credentialsId: 'website', variable: 'WEBSITE'),
-                //     ]) {
-                //         sh 'ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "docker stop capstone-dashboard-ui 2>/dev/null"'
-                //     }
 
                withCredentials([
                     string(credentialsId: 'website', variable: 'WEBSITE'),
