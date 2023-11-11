@@ -62,8 +62,7 @@ pipeline {
                         sh "docker stop ${containerName}"
                         echo "Container stopped successfully."
 
-                        // Add your additional commands here
-                        echo "docker run -d \
+                        sh "docker run -d \
                         -p 7200:7200 \
                         --rm \
                         --name capstone-dashboard-ui \
