@@ -51,9 +51,9 @@ pipeline {
 
                     def containerExists = sh(returnStdout: true, script: "docker ps -q --filter name=${containerName}")
 
-                    echo "containerExists: "
+                    echo "containerExists value: " 
                     echo "${containerExists}"
-                    
+
                     if (containerExists.length() != 0) {
                         // Stop the Docker container
                         sh "docker stop ${containerName}"
