@@ -53,6 +53,8 @@ pipeline {
                     // Check if the container exists before attempting to stop it
                     def containerExists = sh(script: "docker ps -q --filter name=${containerName}", returnStatus: true) == 0
 
+                    echo "${containerExists}"
+                    
                     if (containerExists) {
                         // Stop the Docker container
                         sh "docker stop ${containerName}"
