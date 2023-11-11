@@ -51,15 +51,19 @@ pipeline {
                withCredentials([
                     string(credentialsId: 'website', variable: 'WEBSITE'),
                 ]) {
-                    sh 'ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "docker stop capstone-dashboard-ui"'
+                    // Define your container name or ID
+                    def containerName = 'capstone-dashboard-ui'
 
-                }
+                    // Check if the container exists before attempting to stop it
+                    def containerExists = sh(script: "docker ps -q --filter name=${containerName}", returnStatus: true) == 0
 
-               withCredentials([
-                    string(credentialsId: 'website', variable: 'WEBSITE'),
-                ]) {
-                    sh '''
-                        ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "docker run -d \
+                    if (containerExists) {
+                        // Stop the Docker container
+                        sh "docker stop ${containerName}"
+                        echo "Container stopped successfully."
+
+                        // Add your additional commands here
+                        echo "docker run -d \
                         -p 7200:7200 \
                         --rm \
                         --name capstone-dashboard-ui \
@@ -67,12 +71,22 @@ pipeline {
                         -v /var/run/docker.sock:/var/run/docker.sock \
                         stoicllama/capstone-dashboard-ui:${version}
 
-                        docker ps
-                        "
-                    '''
+                        docker ps"
+                    } else {
+                        echo "Container does not exist."
+
+                        sh "docker run -d \
+                        -p 7200:7200 \
+                        --rm \
+                        --name capstone-dashboard-ui \
+                        --network monitoring \
+                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        stoicllama/capstone-dashboard-ui:${version}
+
+                        docker ps"
+                    }
                 }
             }
-
         }
     }
 
