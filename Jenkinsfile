@@ -46,14 +46,48 @@ pipeline {
             steps {
                 echo 'deploying the application...' 
 
+                script {
+                    // Define your container name or ID
+                    def containerName = 'capstone-dashboard-ui'
+
+                    // Check if the container exists before attempting to stop it
+                    def containerExists = sh(script: "docker ps -q --filter name=${containerName}", returnStatus: true) == 0
+
+                    if (containerExists) {
+                        // Stop the Docker container
+                        sh "docker stop ${containerName}"
+                        echo "Container stopped successfully. Continuing..."
+                    } else {
+                        echo "Container does not exist. Continuing..."
+                    }
+                }
+
                 // Use the withCredentials block to access the credentials
                 // Note: need --rm when docker run.. so that docker stop can kill it cleanly
+                //    withCredentials([
+                //         string(credentialsId: 'website', variable: 'WEBSITE'),
+                //     ]) {
+                //         sh 'ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "docker stop capstone-dashboard-ui 2>/dev/null"'
+                //     }
+
                withCredentials([
                     string(credentialsId: 'website', variable: 'WEBSITE'),
                 ]) {
-                    sh 'ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "./run.sh ${version}"'
+                    sh '''
+                        ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "docker run -d \
+                        -p 7200:7200 \
+                        --rm \
+                        --name capstone-dashboard-ui \
+                        --network monitoring \
+                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        stoicllama/capstone-dashboard-ui:${version}
+
+                        docker ps
+                        "
+                    '''
                 }
             }
+
         }
     }
 
