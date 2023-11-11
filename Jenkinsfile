@@ -52,11 +52,13 @@ pipeline {
                     sh '''
                         ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "/bin/sh -c \
                         docker ps -q --filter name=${containerName} > result \
+                        
+                        echo "result is: ${#result} 
+
                         'if [ ${#result} > 0 ]; \
-                        then echo "Container exists. Stopping container..." \
-                        docker stop ${containerName} \
-                        else echo "Container does not exist. Continuing..." \ 
-                        fi'; \ 
+                        then echo "Container exists. Stopping container..." docker stop ${containerName}; \
+                        else echo "Container does not exist. Continuing..."; \ 
+                        fi' \ 
                         "
                     '''
                 }
