@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         version = '1.1'
+        containerName = 'capstone-dashboard-ui'
     }
 
     stages {
@@ -29,9 +30,9 @@ pipeline {
 
                 echo 'building the application...'
                 // sh 'doctl registry repo list-v2'
-                sh "docker build -t capstone-dashboard-ui:${version} ."
-                sh "docker tag capstone-dashboard-ui:${version} stoicllama/capstone-dashboard-ui:${version}"
-                sh "docker push stoicllama/capstone-dashboard-ui:${version}"
+                sh 'docker build -t "${containerName}:${version}" .'
+                sh 'docker tag "${containerName}:${version}" stoicllama/"${containerName}:${version}"'
+                sh 'docker push stoicllama/"${containerName}:${version}"'
                 // sh 'doctl registry repo list-v2'
             }
         }
@@ -51,13 +52,13 @@ pipeline {
                 ]) {
                     script {
                         // Use SSH to check if the container exists
-                        def containerExists = sh(script: "ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} docker ps -q --filter name=capstone-dashboard-ui", returnStatus: true) == 0
+                        def containerExists = sh(script: 'ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key "${WEBSITE}" docker ps -q --filter name="${containerName}"', returnStatus: true) == 0
 
                         if (containerExists) {
                             echo "Container exists, stopping it..."
 
                             // Use SSH to stop the Docker container
-                            sh "ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} docker stop capstone-dashboard-ui"
+                            sh 'ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key "${WEBSITE}" docker stop "${containerName}"'
                             echo "Container stopped successfully"
                         } else {
                             echo "Container does not exist, continuing..."
@@ -72,10 +73,10 @@ pipeline {
                         ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "docker run -d \
                         -p 7200:7200 \
                         --rm \
-                        --name capstone-dashboard-ui \
+                        --name ${containerName} \
                         --network monitoring \
                         -v /var/run/docker.sock:/var/run/docker.sock \
-                        stoicllama/capstone-dashboard-ui:${version}
+                        stoicllama/${containerName}:${version}
 
                         docker ps
                         "
