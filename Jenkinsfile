@@ -57,8 +57,8 @@ pipeline {
 
                         'if [ ${#result} > 0 ]; \
                         then echo "Container exists. Stopping container..." docker stop ${containerName}; \
-                        else echo "Container does not exist. Continuing..."; \ 
-                        fi' \ 
+                        else echo "Container does not exist. Continuing...";  
+                        fi' 
                         "
                     '''
                 }
