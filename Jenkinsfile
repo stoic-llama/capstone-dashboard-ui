@@ -49,7 +49,10 @@ pipeline {
                 script {
                     def containerName = 'capstone-dashboard-ui'
 
-                    def containerExists = sh(returnStdout: true, script: "docker ps -q --filter name=${containerName}")
+                    // def containerExists = sh(returnStdout: true, script: "docker ps -q --filter name=${containerName}")
+
+                    sh 'docker ps -q --filter name=${containerName} > result'
+                    def containerExists = readFile('result')
 
                     echo "containerExists value: " 
                     echo "${containerExists}"
