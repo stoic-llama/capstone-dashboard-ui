@@ -46,27 +46,22 @@ pipeline {
             steps {
                 echo 'deploying the application...' 
 
-                script {
-                    def containerName = 'capstone-dashboard-ui'
-
-                    // def containerExists = sh(returnStdout: true, script: "docker ps -q --filter name=${containerName}")
-
-                    sh 'docker ps -q --filter name=${containerName} > result'
-                    def containerExists = readFile('result')
-
-                    echo "containerExists value: " 
-                    echo "${containerExists}"
-
-                    if (containerExists.length() != 0) {
-                        // Stop the Docker container
-                        sh "docker stop ${containerName}"
-                        echo "Container stopped successfully. Continuing..."
-                    } else {
-                        echo "Container does not exist. Continuing..."
-                    }
+                withCredentials([
+                    string(credentialsId: 'website', variable: 'WEBSITE'),
+                ]) {
+                    sh '''
+                        ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "/bin/sh -c \
+                        docker ps -q --filter name=${containerName} > result \
+                        'if [ ${#result} > 0 ]; \
+                        then echo "Container exists. Stopping container..." \
+                        docker stop ${containerName} \
+                        else echo "Container does not exist. Continuing..."; \ 
+                        fi' \ 
+                        "
+                    '''
                 }
 
-               withCredentials([
+                withCredentials([
                     string(credentialsId: 'website', variable: 'WEBSITE'),
                 ]) {
                     sh '''
