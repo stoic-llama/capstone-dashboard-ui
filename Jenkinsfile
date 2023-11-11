@@ -51,27 +51,9 @@ pipeline {
                withCredentials([
                     string(credentialsId: 'website', variable: 'WEBSITE'),
                 ]) {
-                    sh 'ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "docker stop capstone-dashboard-ui 2>/dev/null"'
-                }
-
-               withCredentials([
-                    string(credentialsId: 'website', variable: 'WEBSITE'),
-                ]) {
-                    sh '''
-                        ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "docker run -d \
-                        -p 7200:7200 \
-                        --rm \
-                        --name capstone-dashboard-ui \
-                        --network monitoring \
-                        -v /var/run/docker.sock:/var/run/docker.sock \
-                        stoicllama/capstone-dashboard-ui:${version}
-
-                        docker ps
-                        "
-                    '''
+                    sh 'ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "./run.sh ${version}"'
                 }
             }
-
         }
     }
 
