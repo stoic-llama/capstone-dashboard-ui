@@ -52,17 +52,9 @@ pipeline {
                 ]) {
                     script {
                         // Use SSH to check if the container exists
-                        def containerExists = sh(script: 'ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key "${WEBSITE}" docker ps -q --filter name="${containerName}"', returnStatus: true) == 0
+                        def containerExists = sh(script: 'ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key "${WEBSITE}" docker stop "${containerName}"', returnStatus: true)
 
-                        if (containerExists) {
-                            echo "Container exists, stopping it..."
-
-                            // Use SSH to stop the Docker container
-                            sh 'ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key "${WEBSITE}" docker stop "${containerName}"'
-                            echo "Container stopped successfully"
-                        } else {
-                            echo "Container does not exist, continuing..."
-                        }
+                        echo "containerExists: $containerExists"
                     }
                 }
 
