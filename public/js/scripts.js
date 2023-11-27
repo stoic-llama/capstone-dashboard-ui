@@ -77,7 +77,7 @@ function generateRows(result) {
                 </div>
                 <h1>
                 ${item.timeToProd}
-                <small style="font-size: small;">min</small>              
+                <small style="font-size: small;">seconds</small>              
                 </h1>
             </div>
 
@@ -97,7 +97,7 @@ function generateRows(result) {
                 </div>
                 <h1>
                 ${item.mttr}
-                <small style="font-size: small;">min</small>
+                <small style="font-size: small;">minutes</small>
                 </h1>
             </div>
 
