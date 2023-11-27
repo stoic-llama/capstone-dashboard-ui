@@ -54,7 +54,8 @@ function generateRows(result) {
   
   result.forEach( (item, index) => {
       const div = document.createElement('div')
-      const updateTime = new Date(item.timestamp).toLocaleDateString() + new Date(item.timestamp).toLocaleTimeString()
+      const formattedTime = substring(0, item.timestamp.length - 6)
+      const updateTime = new Date(formattedTime).toLocaleDateString() + new Date(formattedTime).toLocaleTimeString()
       const status = (item.availability === 'UP' ? 'green' : 'red')
       div.innerHTML = `
         <div>
