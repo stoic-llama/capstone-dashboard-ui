@@ -50,16 +50,16 @@ function filterRows(result) {
 function generateRows(result) {
   const fragment = document.createDocumentFragment()
   const main = document.querySelector('.main-container')
-    
   console.log(main)
   
   result.forEach( (item, index) => {
       const div = document.createElement('div')
+      const updateTime = new Date(item.timestamp).toLocaleDateString() + new Date(item.timestamp).toLocaleTimeString()
       const status = (item.availability === 'UP' ? 'green' : 'red')
       div.innerHTML = `
         <div>
             <h3 class="row-title">${item.name}</h3>
-            <small style="color: lightgray;">Last Updated on ${item.timestamp}</small> 
+            <small style="color: lightgray;">Last Updated on ${updateTime}</small> 
         </div>
 
         <div class="main-cards" style="margin-block-end: 3em;">
