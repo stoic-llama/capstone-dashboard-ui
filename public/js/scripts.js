@@ -22,7 +22,6 @@ fetch('http://helpmybabies.com:7100/api/v1/applications')
 function filterRows(result) {
     const latestTimestamps = {}; // Object to store the latest timestamps for each name
 
-    console.log("Hello world")
     // Iterate through the array and find the latest timestamp for each name
     result.forEach(obj => {
       const name = obj.name;

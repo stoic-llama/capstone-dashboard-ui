@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        version = '1.3'
+        version = '1.4'
         containerName = 'capstone-dashboard-ui'
     }
 
