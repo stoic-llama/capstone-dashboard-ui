@@ -48,21 +48,21 @@ pipeline {
                 echo 'deploying the application...' 
                 
                 withCredentials([
-                    string(credentialsId: 'website', variable: 'WEBSITE'),
+                    string(credentialsId: 'monitoring', variable: 'MONITORING'),
                 ]) {
                     script {
                         // Use SSH to check if the container exists
-                        def containerExists = sh(script: 'ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key "${WEBSITE}" docker stop "${containerName}"', returnStatus: true)
+                        def containerExists = sh(script: 'ssh -i /var/jenkins_home/.ssh/monitoring_deploy_rsa_key "${MONITORING}" docker stop "${containerName}"', returnStatus: true)
 
                         echo "containerExists: $containerExists"
                     }
                 }
 
                 withCredentials([
-                    string(credentialsId: 'website', variable: 'WEBSITE'),
+                    string(credentialsId: 'monitoring', variable: 'MONITORING'),
                 ]) {
                     sh '''
-                        ssh -i /var/jenkins_home/.ssh/website_deploy_rsa_key ${WEBSITE} "docker run -d \
+                        ssh -i /var/jenkins_home/.ssh/monitoring_deploy_rsa_key ${MONITORING} "docker run -d \
                         -p 7200:7200 \
                         --rm \
                         --name ${containerName} \
