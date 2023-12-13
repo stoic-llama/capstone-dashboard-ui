@@ -6,6 +6,7 @@ FROM node:16-alpine
 RUN apk add --update docker openrc
 
 ENV PORT="7200"
+ENV API="http://capstonemonitoring.xyz:7100/api/v1/applications"
 
 # create destination directory
 RUN mkdir -p /home/app
