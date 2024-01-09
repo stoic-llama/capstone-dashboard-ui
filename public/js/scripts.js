@@ -47,7 +47,7 @@ function filterRows(result) {
 }
 
 
-function generateRows(result) {
+function generateRows(result) { 
   const fragment = document.createDocumentFragment()
   const main = document.querySelector('.main-container')
   console.log(main)
@@ -76,7 +76,7 @@ function generateRows(result) {
                 </div>
                 <h1>
                 ${item.timeToProd}
-                <small style="font-size: small;">seconds</small>              
+                <small style="font-size: small;">seconds (monthly)</small>              
                 </h1>
             </div>
 
@@ -86,17 +86,7 @@ function generateRows(result) {
                 </div>
                 <h1>
                 ${item.freqToProd}
-                <small style="font-size: small;">per month</small>
-                </h1>
-            </div>
-
-            <div class="card">
-                <div class="card-inner">
-                <h3>MTTR</h3>
-                </div>
-                <h1>
-                ${item.mttr}
-                <small style="font-size: small;">minutes</small>
+                <small style="font-size: small;">times (monthly)</small>
                 </h1>
             </div>
 
@@ -106,7 +96,17 @@ function generateRows(result) {
                 </div>
                 <h1>
                 ${item.changeFailRate}
-                <small style="font-size: small;">%</small>
+                <small style="font-size: small;">% (monthly)</small>
+                </h1>
+            </div>
+
+            <div class="card">
+                <div class="card-inner">
+                <h3>MTTR</h3>
+                </div>
+                <h1>
+                ${item.mttr}
+                <small style="font-size: small;">minutes (overall)</small>
                 </h1>
             </div>
         </div>    
