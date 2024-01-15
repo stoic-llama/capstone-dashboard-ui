@@ -76,7 +76,7 @@ function generateRows(result) {
                 </div>
                 <h1>
                 ${item.timeToProd}
-                <small style="font-size: small;">seconds (monthly)</small>              
+                <small style="font-size: small;">seconds</small>              
                 </h1>
             </div>
 
@@ -86,7 +86,7 @@ function generateRows(result) {
                 </div>
                 <h1>
                 ${item.freqToProd}
-                <small style="font-size: small;">times (monthly)</small>
+                <small style="font-size: small;">times</small>
                 </h1>
             </div>
 
@@ -96,7 +96,7 @@ function generateRows(result) {
                 </div>
                 <h1>
                 ${item.changeFailRate}
-                <small style="font-size: small;">% (monthly)</small>
+                <small style="font-size: small;">%</small>
                 </h1>
             </div>
 
@@ -106,7 +106,7 @@ function generateRows(result) {
                 </div>
                 <h1>
                 ${item.mttr}
-                <small style="font-size: small;">minutes (overall)</small>
+                <small style="font-size: small;">minutes</small>
                 </h1>
             </div>
         </div>    
