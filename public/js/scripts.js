@@ -59,7 +59,7 @@ function generateRows(result) {
       div.innerHTML = `
         <div>
             <h3 class="row-title">${item.name}</h3>
-            <small style="color: lightgray;">Last Updated on ${updateTime}</small> 
+            <small style="color: lightgray;">Last Updated on ${updateTime} (UTC)</small> 
         </div>
 
         <div class="main-cards" style="margin-block-end: 3em;">
